@@ -38,9 +38,10 @@ def get_collection(collection_name):
 def get_entry(collection_name, entry_id):
 	collection = db[collection_name]
 	output = []
-	for d in collection.find({_id: entry_id}):
+	for d in collection.find({'_id': entry_id}):
 		output.append(d)
 	print(output)
+	return jsonify(output)
 
 @app.errorhandler(404)
 def not_found(error):
