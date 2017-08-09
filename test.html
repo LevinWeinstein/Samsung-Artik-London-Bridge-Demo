@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
+	<script src="./components/show-info.js"></script>
+</head>
+<script>
+	function createCORSRequest(method, url) {
+		var xhr = new XMLHttpRequest();
+		if ("withCredentials" in xhr) {
+			xhr.open(method, url, true);
+		} else if (typeof XDomainRequest != "undefined") {
+			xhr = new XDomainRequest();
+			xhr.open(method, url);
+		} else {
+			xhr = null;
+		}
+
+		xhr.onload = function() {
+			console.log(xhr.responseText);
+			var json = JSON.parse(xhr.responseText);
+			document.querySelector('p').innerHTML = xhr.responseText;
+			console.log(json)
+		}
+  		return xhr;
+	}
+
+	function request(){
+		var url = "http://localhost:5000/"
+		var xhr = createCORSRequest('GET', url + document.getElementById("endpoint_id").value);
+		xhr.send();
+		//return JSON.parse(xhr.responseText);
+	}
+
+	function request_end(endpoint){
+		var url = "http://localhost:5000/"
+		var xhr = createCORSRequest('GET', url + endpoint)
+		xhr.send()
+	}
+
+	function request_doc(col, doc){
+		var url = "http://localhost:5000/collections/";
+		var xhr = createCORSRequest('GET', url + col + "/" + doc);
+		xhr.send();
+	}
+</script>
+<body>
+	<input id="endpoint_id" name="endpoint" type="text"></input>
+	<button onclick="request()">Click me</button>
+	<h1>Result</h1>
+	<p></p>
+	<a-scene>
+		<a-camera position="0 2 4">
+    		<a-cursor color="#4CC3D9" fuse="true" timeout="10"></a-cursor>
+  		</a-camera>
+		<a-box show-info id="collections/utilitypole/Adobe" position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+		<a-box show-info id="collections/utilitypole/UFO" position="-3 0.5 -3" rotation"0 45 0" color="#4CC3D9"></a-box>
+	</a-scene>
+</body>
+</html>

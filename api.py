@@ -6,21 +6,6 @@ app = Flask(__name__)
 client = MongoClient('mongodb://artikuser:iot2017@45.55.4.31/workshop')
 db = client.workshop
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web', 
-        'done': False
-    }
-]
-
 @app.route('/collections', methods=['GET'])
 def get_collections():
 	return jsonify({'collections': db.collection_names()})
