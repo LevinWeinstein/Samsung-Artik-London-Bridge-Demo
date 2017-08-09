@@ -19,7 +19,8 @@
 		xhr.onload = function() {
 			console.log(xhr.responseText);
 			var json = JSON.parse(xhr.responseText);
-			document.querySelector('p').innerHTML = xhr.responseText;
+			document.getElementById("_id").innerHTML = json["_id"];
+			document.getElementById("payload").innerHTML = JSON.stringify(json["payload"]);
 			console.log(json)
 		}
   		return xhr;
@@ -48,7 +49,8 @@
 	<input id="endpoint_id" name="endpoint" type="text"></input>
 	<button onclick="request()">Click me</button>
 	<h1>Result</h1>
-	<p></p>
+	<p id="_id"></p>
+	<p id="payload"></p>
 	<a-scene>
 		<a-camera position="0 2 4">
     		<a-cursor color="#4CC3D9" fuse="true" timeout="10"></a-cursor>

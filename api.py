@@ -26,7 +26,7 @@ def get_entry(collection_name, entry_id):
 	for d in collection.find({'_id': entry_id}):
 		output.append(d)
 	print(output)
-	return jsonify(output)
+	return jsonify(output[0])
 
 @app.errorhandler(404)
 def not_found(error):
