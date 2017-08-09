@@ -1,0 +1,84 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl M_09___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.725490 0.658824 0.670588
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_09___Default1.jpg
+
+newmtl M_08___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.658824 0.580392 0.552941
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_08___Default1.jpg
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl M_10___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.211765 0.211765 0.239216
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_10___Default1.jpg
+
+newmtl M_07___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.274510 0.262745 0.325490
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_07___Default1.jpg
+
+newmtl M_17___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.211765 0.188235 0.223529
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_17___Default1.jpg
+
+newmtl M_01___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.588235 0.588235 0.588235
+Ks 0.330000 0.330000 0.330000
+
+newmtl M_13___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.352941 0.360784 0.552941
+Ks 0.330000 0.330000 0.330000
+
+newmtl M_14___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.921569 0.921569 0.921569
+Ks 0.330000 0.330000 0.330000
+
+newmtl M_15___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.254902 0.152941 0.105882
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_15___Default1.jpg
+
+newmtl M_16___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.254902 0.152941 0.105882
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_16___Default1.jpg
+
+newmtl M_18___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.356863 0.294118 0.317647
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_18___Default1.jpg
+
+newmtl M_11___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.419608 0.376471 0.403922
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_11___Default1.jpg
+
+newmtl M_12___Default1
+Ka 0.000000 0.000000 0.000000
+Kd 0.427451 0.376471 0.388235
+Ks 0.330000 0.330000 0.330000
+map_Kd Tower03_sketchup/M_12___Default1.jpg
+
