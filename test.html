@@ -2,7 +2,7 @@
 <html>
 <head>
 	<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
-	<script src="http://localhost:8000/components/show-info.js"></script>
+	<script src="./components/show-info.js"></script>
 </head>
 <script>
 	function createCORSRequest(method, url) {
@@ -34,20 +34,20 @@
 	}
 
 	function request(){
-		var url = "http://localhost:5000/"
+		var url = "http://104.236.133.46:5000/"
 		var xhr = createCORSRequest('GET', url + document.getElementById("endpoint_id").value);
 		xhr.send();
 		//return JSON.parse(xhr.responseText);
 	}
 
 	function request_end(endpoint){
-		var url = "http://localhost:5000/collections/"
+		var url = "http://104.236.133.46:5000/collections/"
 		var xhr = createCORSRequest('GET', url + endpoint)
 		xhr.send()
 	}
 
 	function request_doc(col, doc){
-		var url = "http://localhost:5000/collections/";
+		var url = "http://104.236.133.46:5000/collections/";
 		var xhr = createCORSRequest('GET', url + col + "/" + doc);
 		xhr.send();
 	}
@@ -55,8 +55,8 @@
 <body>
 		<a-scene>
 		  <a-assets>
-	                <a-asset-item id="object" src="http://localhost:8000/models/Tower03_sketchup.obj"></a-asset-item>
-	                <a-asset-item id="material" src="http://localhost:8000/models/Tower03_sketchup.mtl"></a-asset-item>
+	                <a-asset-item id="object" src="./models/Tower03_sketchup.obj"></a-asset-item>
+	                <a-asset-item id="material" src="./models/Tower03_sketchup.mtl"></a-asset-item>
 	            </a-assets>
 				<a-camera position="0 2 0">
 					<a-cursor color="#4CC3D9" fuse="true" timeout="10"></a-cursor>
