@@ -76,7 +76,7 @@ def get_field(collection_name, entry_id, field_id):
 	for d in collection.find({'_id': entry_id}):
 		output.append(d)
 	print(output)
-	return jsonify({field_id: output[0]['payload'][field_id]})
+	return jsonify({'_id': entry_id, field_id: output[0]['payload'][field_id]})
 
 @app.route('/collections/<string:collection_name>/<string:entry_id>', methods=['GET'])
 @crossdomain(origin="*")
