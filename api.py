@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!/usr/bin/python
 from flask import Flask, jsonify, abort, make_response
 from pymongo import MongoClient
 
@@ -84,4 +84,4 @@ def not_found(error):
 	return make_response(jsonify({'error': 'Not found'}), 404)
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(host='0.0.0.0')
