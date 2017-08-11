@@ -3,6 +3,8 @@
 <head>
 	<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
 	<script src="./components/show-info.js"></script>
+	<script src="https://rawgit.com/chenzlabs/gearvr-controls/master/dist/aframe-gearvr-controls-component.min.js"></script>
+
 </head>
 <script>
 	function createCORSRequest(method, url) {
@@ -73,7 +75,7 @@
 			<img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg"></img>
 			<img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg"></img>
 	            </a-assets>
-				<a-camera wasd-controls="fly: true"  position="0 2 0">
+				<a-camera wasd-controls="fly: true" gearvr-controls="fly: true"  position="0 2 0">
 	      <a-entity id="text" material="opacity: 0.5"
 	        position="0 0 -1"
 	        geometry="primitive: plane; width: auto; height: auto"
@@ -81,10 +83,11 @@
 	        text="value: ">
 					<a-cursor color="#4CC3D9" fuse="true" timeout="10"></a-cursor>
 				</a-camera>
-	     <a-obj-model src="#object" mtl="#material" position="0 0 -2" rotation="0 -55 0 " scale="0.001 0.001 0.001"></a-obj-model>
+	      <a-obj-model src="#object" color="#998860" position="0 0 -2" rotation="0 -55 0 " scale="0.001 0.001 0.001"></a-obj-model>
 
 
 	      </a-entity>
+		<a-entity gearvr-controls></a-entity>
 	      <a-box show-info id="vmworld/TowerBridge/temperature" position="1.849 3.993 -2.673" scale="0.2 0.2 0.2" rotation="0 45 0" color="#4CC3D9"></a-box>
 	      <a-box show-info id="vmworld/TowerBridge/inclination" position="0.229 1.294 -2.403" scale="0.2 0.2 0.2" rotation="0 45 0" color="#4CC3D9"></a-box>
 	      <a-box show-info id="vmworld/TowerBridge/earthquake" position="3.199 1.9 -2.918" scale="0.2 0.2 0.2" rotation="0 45 0" color="#4CC3D9"></a-box>
