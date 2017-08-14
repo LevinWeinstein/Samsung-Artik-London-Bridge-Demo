@@ -7,6 +7,7 @@
 
 </head>
 <script>
+	var g_endpoint = "vmworld/TowerBridge/temperature";
 	function createCORSRequest(method, url) {
 		var xhr = new XMLHttpRequest();
 		if ("withCredentials" in xhr) {
@@ -43,6 +44,7 @@
 					str += key + ' -> ' + val + '\n';
 				}
 			document.getElementById("text").setAttribute("text", "value: " + str);
+			request_end(g_endpoint);
 		} 
 
   		return xhr;
@@ -66,8 +68,13 @@
 		var xhr = createCORSRequest('GET', url + col + "/" + doc);
 		xhr.send();
 	}
+
+	function poll_end()
+	{
+		request_end(g_endpoint);
+	}
 </script>
-<body>
+<body onload="poll_end()">
 		<a-scene>
 		  <a-assets>
 	                <a-asset-item id="object" src="./models/Tower03_sketchup.obj"></a-asset-item>
