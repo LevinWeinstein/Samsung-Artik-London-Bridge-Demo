@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, abort, make_response
 from flask_sockets import Sockets
 from pymongo import MongoClient
+import time
 
 app = Flask(__name__)
 sockets = Sockets(app)
@@ -56,11 +57,25 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 @sockets.route('/echo')
 def echo_socket(ws):
+	global latest;
 	i = 0;
 	while not ws.closed:
 		while (check_new('vmworld', 'TowerBridge') == False):
-			ws.send("not changed");
+			time.sleep(.1)
+			#ws.send("not changed");
+		time.sleep(.1)
 		ws.send("changed");
+		change = get_item('vmworld', 'TowerBridge')
+		print(change)
+		ws.send("{0}".format(change))
+
+@sockets.route('/echo')
+def echo_socket(ws):
+	global latest;
+	i = 0;
+	while not ws.closed:
+		if (check_new('vmworld', 'TowerBrige') == True):
+			ws.send("{0}".format(get_item('vmworld', 'TowerBridge')))
 
 
 @app.route('/')
@@ -92,6 +107,8 @@ def get_field(collection_name, entry_id, field_id):
 	print(output)
 	return jsonify({'_id': entry_id, field_id: output[0]['payload'][field_id]})
 
+@app.route('/collections/<string:collection_name>/<string:entry_id>/change', methods=['GET'])
+@crossdomain(origin="*")
 def check_new(collection_name, entry_id):
 	global latest;
 	collection = db[collection_name]
@@ -100,11 +117,14 @@ def check_new(collection_name, entry_id):
 		output.append(d)
 	if latest != output[0]['_msgid']:
 		latest = output[0]['_msgid']
-		return (True)
-	return (False)
+		print("changed")
+		return jsonify(True)
+	print("not changed")
+	return jsonify(False)
 
 @app.route('/collections/<string:collection_name>/<string:entry_id>', methods=['GET'])
 @crossdomain(origin="*")
+#@app.run(threaded=True)
 def get_entry(collection_name, entry_id):
 	collection = db[collection_name]
 	output = []
@@ -113,12 +133,21 @@ def get_entry(collection_name, entry_id):
 	print(output)
 	return jsonify(output[0])
 
+def get_item(collection_name, entry_id):
+	global latest;
+	collection = db[collection_name]
+	output = []
+	for d in collection.find({'_id': entry_id}):
+		output.append(d)
+	return output[0]
+
+
 
 if __name__ == "__main__":
 	from gevent import pywsgi
 	from geventwebsocket.handler import WebSocketHandler
  	#last_ts = db.oplog.rs.find().sort('$natural', -1)[0]['ts'];
 	#print(last_ts);
-	check_new('vmworld', 'TowerBridge');
+	#app.run(threaded=True)
 	server = pywsgi.WSGIServer(('', 5000), app, handler_class=WebSocketHandler)
 	server.serve_forever()

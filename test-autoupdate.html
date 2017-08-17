@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<script>
+	function page_init() {
+		var exampleSocket = new WebSocket('ws://mc.kamaole.me:5000/echo');
+
+		exampleSocket.onmessage = function (event) {
+			console.log(event.data);
+		}
+
+		exampleSocket.onopen = function (event) {
+			exampleSocket.send("hello");
+		}
+	}
+</script>
+<body onload="page_init()">
+</body>
+</html>
+

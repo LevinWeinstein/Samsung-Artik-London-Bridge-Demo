@@ -6,6 +6,11 @@
 </head>
 <script>
 	var g_endpoint = "vmworld/TowerBridge/temperature";
+	var sentences = {
+		"temperature": "The temperture is {0}",
+		"inclination": "The bridge is {0}",
+		"earthquake": "Earthquake{0}detected"
+	};
 	function createCORSRequest(method, url) {
 		var xhr = new XMLHttpRequest();
 		if ("withCredentials" in xhr) {
@@ -31,7 +36,7 @@
 			document.getElementById("text").setAttribute("text", "value: " + str);
 			console.log(json)
 		} */
-
+		/*
 		xhr.onload = function() {
 			console.log(xhr.responseText);
 			var json = JSON.parse(xhr.responseText);
@@ -43,7 +48,7 @@
 				}
 			document.getElementById("text").setAttribute("text", "value: " + str);
 			request_end(g_endpoint);
-		} 
+		} */
 
   		return xhr;
 	}
@@ -55,10 +60,52 @@
 		//return JSON.parse(xhr.responseText);
 	}
 
-	function request_end(endpoint){
+	/* function request_end(endpoint){
 		var url = "http://104.236.133.46:5000/collections/"
 		var xhr = createCORSRequest('GET', url + endpoint)
+		xhr.onload = function() {
+			console.log(xhr.responseText);
+			var json = JSON.parse(xhr.responseText);
+			var str = "";
+			for (var key in json)
+				if (json.hasOwnProperty(key)) {
+					var val = json[key];
+					str += key + ' ->' + val + '\n';
+				}
+			document.getElementById("text").setAttribute("text", "value: " + str);
+			check_change();
+		}
 		xhr.send()
+	} */
+	function get_replacement(json, key) {
+		if (key === "inclination" && json[key] == true)
+			return ("up");
+		else if (key === "inclination")
+			return ("down");
+		else if (key === "earthquake" && json[key] == true)
+			return (" ");
+		else if (key === "earthquake")
+			return (" not ");
+		return json[key];
+	}
+
+	function request_end(endpoint) {
+		var url = "http://104.236.133.46:5000/collections/"
+		var xhr = createCORSRequest('GET', url + endpoint)
+		xhr.onload = function() {
+			console.log(xhr.responseText);
+			var json = JSON.parse(xhr.responseText);
+			var str = "";
+			for (var key in json)
+				if (json.hasOwnProperty(key)) {
+					if (sentences.hasOwnProperty(key)) {
+						str += sentences[key].replace("{0}", get_replacement(json, key)) + '\n';
+					}
+				}
+			document.getElementById("text").setAttribute("text", "value: " + str);
+			check_change();
+		}
+		xhr.send();
 	}
 
 	function request_doc(col, doc){
@@ -67,12 +114,22 @@
 		xhr.send();
 	}
 
-	function poll_end()
-	{
-		request_end(g_endpoint);
+	function check_change() {
+		console.log(sentences[g_endpoint]);
+		var url = "http://104.236.133.46:5000/collections/vmworld/TowerBridge/change";
+		var xhr = createCORSRequest('GET', url);
+		xhr.onload = function () {
+			var json = JSON.parse(xhr.responseText);
+			console.log(json);
+			if (json == true)
+				request_end(g_endpoint);
+			else
+				check_change();
+		}
+		xhr.send();
 	}
 </script>
-<body onload="poll_end()">
+<body onload="check_change()">
 		<a-scene stats>
 			<a-assets>
 				<a-asset-item id="object" src="./models/Tower03_sketchup.obj"></a-asset-item>
@@ -89,7 +146,7 @@
 	      					geometry="primitive: plane; width: auto; height: auto"
 	      					material="color: #0000FF"
 	      					text="value: ">
-				<a-cursor color="#4CC3D9" fuse="true" timeout="10"></a-cursor>
+				<a-cursor color="black" fuse="true" fuseTimeout="0" timeout="10"></a-cursor>
 				</a-entity>
 			</a-camera>
 
@@ -97,7 +154,31 @@
 		
 		<a-entity collada-model="#tower" material="color: green" scale="0.04 0.04 0.04" position="0 0 -2" rotation="0 -55 0"></a-entity>
 	      
-	    <a-cylinder show-info id="vmworld/TowerBridge/temperature" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" position="1.849 3.993 -2.673">
+	    
+		  
+		<a-cylinder id="ground" src="#groundTexture" radius="30" height="0.1"></a-cylinder>
+
+		<a-cylinder show-info id="vmworld/TowerBridge/temperature" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" position="1.849 3.993 -2.673">
+sition="1.849 3.993 -2.673">
+            <a-cylinder show-info id="vmworld/TowerBridge/temperature"  height="0.01" src="#sLogo" radius="0.2" rotation="0 90 90"> </a-cylinder>
+            <a-cylinder show-info id="vmworld/TowerBridge/temperature"  height="0.01" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+            <a-sphere show-info id="vmworld/TowerBridge/temperature"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
+            <a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
+        </a-entity>
+
+        <a-entity position="0.229 1.294 -2.403">
+            <a-cylinder show-info id="vmworld/TowerBridge/inclination" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
+            <a-cylinder show-info id="vmworld/TowerBridge/inclination" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+            <a-sphere show-info id="vmworld/TowerBridge/inclination"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
+            <a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
+        </a-entity>
+
+        <a-entity position="3.199 1.9 -2.918">
+            <a-cylinder show-info id="vmworld/TowerBridge/earthquake" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
+            <a-cylinder show-info id="vmworld/TowerBridge/earthquake" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+            <a-sphere show-info id="vmworld/TowerBridge/earthquake"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
+            <a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
+        </a-entity>
 	    	<a-animation attribute="rotation" dur="3000" to="360 90 90" repeat="indefinite" easing="linear"></a-animation>
 	    </a-cylinder>
 	      
@@ -108,8 +189,6 @@
 	    <a-cylinder show-info id="vmworld/TowerBridge/earthquake" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" position="3.199 1.9 -2.918">
 	    	<a-animation attribute="rotation" dur="3000" to="360 90 90" repeat="indefinite" easing="linear"></a-animation>
 	    </a-cylinder>
-		  
-		<a-cylinder id="ground" src="#groundTexture" radius="30" height="0.1"></a-cylinder>
 	      
 	    <a-sky id="background" src="#skyTexture" theta-length="90" radius="30"></a-sky>
 	    </a-scene>
