@@ -7,7 +7,8 @@
 <script>
 	var g_endpoint = "vmworld/TowerBridge/temperature";
 	var sentences = {
-		"temperature": "The temperture is {0}",
+		"weight" : "The weight on top of the bridge is {0} tonnes",
+		"temperature": "The temperture is {0} degrees celsius",
 		"inclination": "The bridge is {0}",
 		"earthquake": "Earthquake{0}detected"
 	};
@@ -110,6 +111,14 @@
 		<a-sphere show-info id="vmworld/TowerBridge/earthquake"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
 		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
         </a-entity>
+
+	<a-entity position="4.5 1.6 -2.918">
+		<a-cylinder show-info id="vmworld/TowerBridge/weight" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
+		<a-cylinder show-info id="vmworld/TowerBridge/weight" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+		<a-sphere show-info id="vmworld/TowerBridge/weight"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
+		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
+        </a-entity>
+
 		  
 	<a-cylinder id="ground" src="#groundTexture" radius="30" height="0.1"></a-cylinder>
 
