@@ -4,7 +4,7 @@ AFRAME.registerComponent('show-info', {
 		this.el.addEventListener('fusing', () => {
 			g_endpoint = this.el.id;
 			console.log(this.el.id);
-			request_end(g_endpoint);
+			request_end();
 			//g_update = 1;
 		});
 	}

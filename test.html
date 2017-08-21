@@ -5,12 +5,13 @@
 	<script src="./components/show-info.js"></script>
 </head>
 <script>
-	var g_endpoint = "vmworld/TowerBridge/temperature";
+	var g_endpoint = "";
 	var sentences = {
 		"weight" : "The weight on top of the bridge is {0} tonnes",
 		"temperature": "The temperture is {0} degrees celsius",
 		"inclination": "The bridge is {0}",
-		"earthquake": "Earthquake{0}detected"
+		"earthquake": "Earthquake{0}detected",
+		"traffic": "There are {0} cars"
 	};
 
 	function createCORSRequest(method, url) {
@@ -40,7 +41,7 @@
 		return json[key];
 	}
 
-	function request_end(endpoint) {
+	/* function request_end(endpoint) {
 		var url = "http://104.236.133.46:5000/collections/"
 		var xhr = createCORSRequest('GET', url + endpoint)
 		xhr.onload = function() {
@@ -57,6 +58,27 @@
 			check_change();
 		}
 		xhr.send();
+	} */
+
+	function request_end() {
+		var url = "http://104.236.133.46:5000/collections/vmworld/TowerBridge";
+		console.log("hello");
+		var xhr = createCORSRequest('GET', url);
+		console.log("hello1");
+		xhr.onload = function() {
+			console.log("hello2");
+			var payload = JSON.parse(xhr.responseText)['payload'];
+			console.log(payload);
+			var  str = "";
+			for (var key in payload)
+				if (payload.hasOwnProperty(key)) {
+					if ("vmworld/TowerBridge/" + key === g_endpoint && sentences.hasOwnProperty(key))
+						str += sentences[key].replace("{0}", get_replacement(payload, key)) + '\n';
+				}
+			document.getElementById("text").setAttribute("text", "value: " + str);
+			check_change();
+		}
+		xhr.send();
 	}
 
 	function check_change() {
@@ -66,7 +88,7 @@
 			var json = JSON.parse(xhr.responseText);
 			console.log(json);
 			if (json == true)
-				request_end(g_endpoint);
+				request_end();
 			else
 				check_change();
 		}
@@ -115,6 +137,13 @@
 		<a-cylinder show-info id="vmworld/TowerBridge/weight" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
 		<a-cylinder show-info id="vmworld/TowerBridge/weight" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
 		<a-sphere show-info id="vmworld/TowerBridge/weight"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
+		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
+        </a-entity>
+
+	<a-entity position="-4.697 0.964 -1.563">
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90"></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+		<a-sphere show-info="" id="vmworld/TowerBridge/traffic" opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
 		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
         </a-entity>
 
