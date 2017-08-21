@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+			<!--+ '\n' + get_error(json[key])-->
+
 <head>
 	<script src="https://aframe.io/releases/0.6.1/aframe.min.js"></script>
 	<script src="./components/show-info.js"></script>
@@ -73,14 +75,17 @@
 		console.log("hello1");
 		xhr.onload = function() {
 			console.log("hello2");
+			var errstr = "";
 			var json = JSON.parse(xhr.responseText)
 			var payload = json['payload'];
 			console.log(payload);
 			var  str = "";
 			for (var key in payload)
 				if (payload.hasOwnProperty(key)) {
-					if ("vmworld/TowerBridge/" + key === g_endpoint && sentences.hasOwnProperty(key))
-						str += sentences[key].replace("{0}", get_replacement(payload, key)) + '\n' + get_error(json[key]);
+					if ("vmworld/TowerBridge/" + key === g_endpoint && sentences.hasOwnProperty(key)){
+						str += sentences[key].replace("{0}", get_replacement(payload, key));
+						errstr += get_error(json[key]);
+					}
 					if (json[key] != 0) {
 						console.log(key);
 						document.getElementById("vmworld/TowerBridge/" + key).setAttribute("color", "#ff0000");
@@ -93,6 +98,7 @@
 					}
 				}
 			document.getElementById("text").setAttribute("text", "value: " + str);
+			document.getElementById("errtext").setAttribute("text", "value: " + errstr);
 			check_change();
 		}
 		xhr.send();
@@ -127,6 +133,7 @@
 
 	<a-camera wasd-controls="fly: true" gearvr-controls="fly: true"  position="0 2 0">
 		<a-entity id="text" material="opacity: 0.7; color: black" position="0 -.125 -1" geometry="primitive: plane; width: auto; height: .1" text="value: ; color: #F1FFF8"></a-entity>
+		<a-entity id="errtext" material="opacity: 0.7; color: black" position="0 -.225 -1" geometry="primitive: plane; width: auto; height: .1" text="value: ; color: #F10000"></a-entity>
 		<a-cursor color="#ffffff" fuse="true" fuseTimeout="0" timeout="10"></a-cursor>
 	</a-camera>
 		
