@@ -6,6 +6,7 @@
 </head>
 <script>
 	var g_endpoint = "";
+	var healthy = false;
 	var sentences = {
 		"weight" : "The weight on top of the bridge is {0} tonnes",
 		"temperature": "The temperture is {0} degrees celsius",
@@ -60,6 +61,11 @@
 		xhr.send();
 	} */
 
+	function get_error(code) {
+		var errors = [" ", "Memory is running low", "CPU is busy", "Data transmission is flaky"];
+		return errors[code];
+	}
+
 	function request_end() {
 		var url = "http://104.236.133.46:5000/collections/vmworld/TowerBridge";
 		console.log("hello");
@@ -67,13 +73,24 @@
 		console.log("hello1");
 		xhr.onload = function() {
 			console.log("hello2");
-			var payload = JSON.parse(xhr.responseText)['payload'];
+			var json = JSON.parse(xhr.responseText)
+			var payload = json['payload'];
 			console.log(payload);
 			var  str = "";
 			for (var key in payload)
 				if (payload.hasOwnProperty(key)) {
 					if ("vmworld/TowerBridge/" + key === g_endpoint && sentences.hasOwnProperty(key))
-						str += sentences[key].replace("{0}", get_replacement(payload, key)) + '\n';
+						str += sentences[key].replace("{0}", get_replacement(payload, key)) + '\n' + get_error(json[key]);
+					if (json[key] != 0) {
+						console.log(key);
+						document.getElementById("vmworld/TowerBridge/" + key).setAttribute("color", "#ff0000");
+						document.getElementById("vmworld/TowerBridge/" + key).setAttribute("opacity", ".5");
+					}
+					else {
+						console.log(key);
+						document.getElementById("vmworld/TowerBridge/" + key).setAttribute("color", "#ffffff");
+						document.getElementById("vmworld/TowerBridge/" + key).setAttribute("opacity", ".1");
+					}
 				}
 			document.getElementById("text").setAttribute("text", "value: " + str);
 			check_change();
@@ -95,7 +112,7 @@
 		xhr.send();
 	}
 </script>
-<body onload="check_change()">
+<body onload="request_end()">
 <a-scene stats>
 	<a-assets>
 		<a-asset-item id="object" src="./models/Tower03_sketchup.obj"></a-asset-item>
@@ -107,35 +124,35 @@
 	</a-assets>
 
 	<a-camera wasd-controls="fly: true" gearvr-controls="fly: true"  position="0 2 0">
-		<a-entity id="text" material="opacity: 0.7; color: black" position="0.7 0.7 -1" geometry="primitive: plane; width: auto; height: auto" text="value: ; color: #F1FFF8"></a-entity>
-		<a-cursor color="black" fuse="true" fuseTimeout="0" timeout="10"></a-cursor>
+		<a-entity id="text" material="opacity: 0.7; color: black" position="0 -.125 -1" geometry="primitive: plane; width: auto; height: .1" text="value: ; color: #F1FFF8"></a-entity>
+		<a-cursor color="#ffffff" fuse="true" fuseTimeout="0" timeout="10"></a-cursor>
 	</a-camera>
 		
 	<a-entity collada-model="#tower" material="color: green" scale="0.04 0.04 0.04" position="0 0 -2" rotation="0 -55 0"></a-entity>
 	<a-entity position="1.849 3.993 -2.673">
-        	<a-cylinder show-info id="vmworld/TowerBridge/temperature"  height="0.01" src="#sLogo" radius="0.2" rotation="0 90 90"> </a-cylinder>
-        	<a-cylinder show-info id="vmworld/TowerBridge/temperature"  height="0.01" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+        	<a-cylinder height="0.01" src="#sLogo" radius="0.2" rotation="0 90 90"> </a-cylinder>
+        	<a-cylinder height="0.01" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
         	<a-sphere show-info id="vmworld/TowerBridge/temperature"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
         	<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
 	</a-entity>
 
         <a-entity position="0.229 1.294 -2.403">
-		<a-cylinder show-info id="vmworld/TowerBridge/inclination" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
-		<a-cylinder show-info id="vmworld/TowerBridge/inclination" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
 		<a-sphere show-info id="vmworld/TowerBridge/inclination"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
 		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
         </a-entity>
 
         <a-entity position="3.199 1.9 -2.918">
-		<a-cylinder show-info id="vmworld/TowerBridge/earthquake" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
-		<a-cylinder show-info id="vmworld/TowerBridge/earthquake" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
 		<a-sphere show-info id="vmworld/TowerBridge/earthquake"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
 		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
         </a-entity>
 
 	<a-entity position="4.5 1.6 -2.918">
-		<a-cylinder show-info id="vmworld/TowerBridge/weight" height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
-		<a-cylinder show-info id="vmworld/TowerBridge/weight" height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 90 90" ></a-cylinder>
+		<a-cylinder height="0.02" src="#sLogo" radius="0.2" rotation="0 270 90" position="0 0 -0.005"></a-cylinder>
 		<a-sphere show-info id="vmworld/TowerBridge/weight"  opacity="0.1" scale="0.4 0.4 0.4"></a-sphere>
 		<a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
         </a-entity>
