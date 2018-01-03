@@ -118,8 +118,6 @@ def get_item(collection_name, entry_id):
 		output.append(d)
 	return output[0]
 
-
-
 if __name__ == "__main__":
 	from gevent import pywsgi
 	from geventwebsocket.handler import WebSocketHandler
